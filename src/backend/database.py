@@ -3,7 +3,7 @@ MongoDB database configuration and setup for Mergington High School API
 """
 
 from pymongo import MongoClient
-from argon2 import PasswordHasher
+import hashlib
 
 # Connect to MongoDB
 client = MongoClient('mongodb://localhost:27017/')
@@ -13,9 +13,8 @@ teachers_collection = db['teachers']
 
 # Methods
 def hash_password(password):
-    """Hash password using Argon2"""
-    ph = PasswordHasher()
-    return ph.hash(password)
+    """Hash password using SHA-256"""
+    return hashlib.sha256(password.encode()).hexdigest()
 
 def init_database():
     """Initialize database if empty"""
@@ -163,6 +162,17 @@ initial_activities = {
         },
         "max_participants": 16,
         "participants": ["william@mergington.edu", "jacob@mergington.edu"]
+    },
+    "Manga Maniacs": {
+        "description": "Explore the fantastic stories of the most interesting characters from Japanese Manga (graphic novels).",
+        "schedule": "Tuesdays at 7:00 PM - 8:30 PM",
+        "schedule_details": {
+            "days": ["Tuesday"],
+            "start_time": "19:00",
+            "end_time": "20:30"
+        },
+        "max_participants": 15,
+        "participants": []
     }
 }
 
